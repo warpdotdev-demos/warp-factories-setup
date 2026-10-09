@@ -1,5 +1,7 @@
 # Automation examples
 
+[Setup guide](../README.md) · [Factory examples](../factory-examples/README.md)
+
 Each file contains a trigger and the complete agent instructions from the corresponding catalog template. Copy the directory for the variant matching your Factory's code forge to `automations/` under a file-backed Factory.
 
 ## Incidents and triage
