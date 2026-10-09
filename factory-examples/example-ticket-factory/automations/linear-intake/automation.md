@@ -1,4 +1,5 @@
 ---
+enabled: true
 agent: implementer
 triggers:
   - provider: linear
