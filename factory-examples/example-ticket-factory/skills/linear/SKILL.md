@@ -24,6 +24,10 @@ description: Uses Linear issue and agent-session MCPs for durable tracking and r
 Fetch current description, latest comments, labels, state, assignee, team,
 project, parent, relations in both directions, and attachments. Page through
 results. Respect the configured team/project and explicit intake.
+For dependency checks, use `get_issue` with `includeRelations: true` when
+supported, and fetch every blocker separately for its current state. If the
+live schema uses another relation tool, use that rather than inventing arguments.
+Missing/incomplete relation access is unverifiable, never an empty blocker list.
 
 Discover valid workflow states per team; status tracks progress, labels route
 work. Read before writes, preserve unrelated fields/labels, and combine changed
@@ -53,5 +57,8 @@ disclosed, not retried in a loop or treated as permission to duplicate intake.
 - The implementer calls `finish_task` once for the final response when the run is
   handed off or blocked, including PR/evidence and gaps. This ends the session,
   not the Factory ticket. Do not call session tools afterward in that run.
+  For a dependency pause, set `success: false` and include
+  `Deferred: waiting on dependencies` plus blocker IDs/states or verification
+  gaps in the summary. Do not invent an `outcome: blocked` argument.
   Without the session MCP, use `finish_task` and tracker data; do not replace
   missing live communication with routine issue comments.

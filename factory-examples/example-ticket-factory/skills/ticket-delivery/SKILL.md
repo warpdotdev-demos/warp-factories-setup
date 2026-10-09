@@ -1,6 +1,6 @@
 ---
 name: ticket-delivery
-description: Implements well-specified Linear tickets with blocker checks, verification, and human PR hand-off. Use for intake, implementation, dependency rechecks, or Done-state closeout in this factory.
+description: Implements well-specified Linear tickets with dependency deferral, verification, and human PR hand-off. Use for intake, implementation, dependency readiness checks, or explicitly requested task closeout.
 ---
 # Ticket delivery
 
@@ -42,7 +42,8 @@ surface mechanics.
 ## Canonical task ownership
 Follow `factory-handoff`: resolve the exact ticket/task, notify its existing
 owner for cross-task events, and implement only inside the owning task. Use
-`message_foreman` for coordination, `send_task` for new intake/actual handback.
+`message_foreman` for status/questions, `send_task` for intake, actual handback,
+or an eligible existing-task dependency wakeup.
 Reuse conversation/branch/PR; never restart active, review-pending, or terminal
 work automatically. Distinguish dependency pauses from human, clarification,
 and verification pauses; only dependency pauses can wake automatically.
@@ -75,8 +76,11 @@ are respected too.
   Ask for the precise missing fact or a recorded human waiver. Never waive or
   remove dependencies yourself. Report a discovered self-dependency or cycle;
   do not attempt to resolve it by coding through it.
-- When blocked, record the specific facts and stop without coding. When
-  ready, fetch the latest base; do not implement against an unmerged dependency
+- When blocked, preserve the pickup label and finish with `success: false` and
+  `Deferred: waiting on dependencies`, naming blocker IDs/states or verification
+  gaps. Do not implement or call `complete_task`. The marker must describe a
+  real dependency pause, not a clarification, review, or unrelated failure.
+  When ready, fetch the latest base; do not implement against an unmerged dependency
   branch. Independent ready tickets can proceed; blocked ones cannot.
 
 ## Implementation and verification
@@ -106,11 +110,12 @@ are respected too.
   status, and give the human the PR/evidence. Keep failed/unverified work draft.
 - The requester/team reviews separately and decides whether to merge.
 
-## Completion and dependency release
-Closeout happens only on a Linear Done event or an explicit human recheck.
-The event handler must resolve the original task; its own run is not that task.
+## Explicit task closeout
+The Done automation only wakes existing dependency-deferred tasks. It never
+closes the triggering issue's Factory task. Closeout requires an explicit human
+request; ending an execution or setting Linear Done is not Factory completion.
 
-1. Reread the triggering issue and require a completed workflow state. Resolve
+1. Reread the requested issue and require a completed workflow state. Resolve
    its original task and required PRs, verifying actual merges, repository/base,
    and evidence for the delivered revision. Never complete referenced issues
    or a parent/container from a child's merge.
@@ -121,12 +126,12 @@ The event handler must resolve the original task; its own run is not that task.
    delivery is verified. Do not rewrite Linear's state. Already-complete is a
    no-op; never complete a cancelled task. Report uncertain/failed closeout,
    leaving it pending for explicit human follow-up.
-4. Recheck eligible dependents using their current relations and **all** their
-   blockers. Notify ready work's canonical foreman through `message_foreman`,
-   not an implementation under this ticket's run. Use `send_task` only for a ready,
-   explicitly admitted ticket with no task. Do not restart active or
-   review-pending work.
-5. Open or closed-unmerged required PRs do not satisfy a blocker. There is no
-   GitHub lifecycle handler or schedule: relation changes, missed events,
-   reopened work, and premature Done updates need explicit human re-intake or
-   recheck. Never create a replacement task/PR automatically.
+
+## Dependency wakeups
+Follow the main agent's dependency readiness scan. Only an existing idle task
+whose latest actual agent outcome explicitly deferred on dependencies can wake.
+Require the pickup label and ALL current prerequisites to be ready; skip active,
+terminal, review-pending, human-gated, missing, or unverifiable tasks.
+Use `send_task` with the existing task UID, never new-intake arguments.
+The owner rechecks mutable state before coding. Removed relations, missed
+events, and reopened work require explicit recheck; there is no polling fallback.
