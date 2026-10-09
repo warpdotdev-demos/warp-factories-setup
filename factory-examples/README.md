@@ -18,5 +18,5 @@ Complete factory templates. Each example has its own workflow and setup checklis
 ## Add an example
 
 Add a complete factory directory and link its README above. Keep that README short:
-**Workflow**, **Required setup** (values and files), **Optional customization**,
-and **Before enabling**.
+**Agents**, **Automations**, **Required setup** (values and files),
+**Optional customization**, and **Before enabling**.

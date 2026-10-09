@@ -5,8 +5,10 @@
 One agent implements and verifies well-specified Linear tickets.
 **Read → check blockers → implement → verify → human PR hand-off.**
 
-## Workflow
+## Agents
 - **`implementer`:** fixes bugs or builds features; blocked work pauses before coding.
+
+## Automations
 - **`linear-intake`:** starts on delegation or the `factory-implement` label.
 - **`check-blockers`:** checks dependents when an issue becomes Done.
 
