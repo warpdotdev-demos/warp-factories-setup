@@ -13,7 +13,8 @@ Complete factory templates. Each example has its own workflow and setup checklis
 
 1. Copy an example directory, follow its setup checklist, and connect its integrations.
 2. Register the directory containing `factory.yaml` as the Factory root.
-3. Validate the tree and inspect the apply plan before enabling it. Live access is checked separately.
+3. Ask Warp Agent: “Validate the factory definition at `<factory-root>` using the `factory-files` skill.” See [validation instructions](https://docs.warp.dev/factories/factory-as-code/#validate-with-a-coding-agent).
+4. For a registered GitHub-backed factory, review the [`warp/factory-config` PR check](https://docs.warp.dev/factories/factory-as-code/#pull-request-checks) for proposed resource changes and access errors before merging.
 
 ## Add an example
 

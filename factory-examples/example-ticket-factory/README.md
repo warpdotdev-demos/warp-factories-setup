@@ -31,5 +31,5 @@ If changing the alias, align `factory:<alias>` in the [GitHub skill](skills/gith
 For cross-team blockers, add prerequisite teams and completed states to the [blocker filter](automations/check-blockers/automation.md).
 
 ## Before enabling
-Validate the complete tree and inspect the apply plan; live access is checked separately.
+Follow the [validation steps](../README.md#use-an-example) before enabling this factory.
 A human or existing integration must set Done **after merge**. There is no polling fallback.
