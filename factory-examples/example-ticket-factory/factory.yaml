@@ -1,0 +1,15 @@
+schemaVersion: v1alpha1
+name: Example Ticket Factory
+alias: example-tickets
+description: Implements and verifies well specified Linear tickets
+codeForges:
+  - GITHUB
+repositories:
+  # Replace with the customer's repository.
+  - owner: customer-org
+    name: customer-repo
+integrations:
+  - type: linear
+agentDefaults:
+  model: glm-5.3-fireworks
+  runner: default

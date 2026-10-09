@@ -16,6 +16,7 @@ For each prompt replace the bracketed placeholders with your desired behavior.
 
 Repeat steps 3–5 as needed to get a solid baseline. Once the factory is matching your intended workflow [scorers](https://docs.warp.dev/factories/measure-and-improve/scorers/) can be set up to [continously improve the factory over time](https://docs.warp.dev/factories/measure-and-improve/self-improvement/).
 
-## Automation examples
+## Examples
 
-[Browse the automation examples and setup instructions.](automation-examples/README.md)
+- [Factory examples](factory-examples/README.md): complete factory configurations, starting with a single-agent factory for well-specified Linear tickets.
+- [Automation examples](automation-examples/README.md): individual triggers and prompts to add to an existing factory.
