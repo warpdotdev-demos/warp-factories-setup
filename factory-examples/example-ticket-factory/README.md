@@ -2,14 +2,32 @@
 
 [All factory examples](../README.md) · [Setup guide](../../README.md)
 
-A single agent factory to implement and verify linear tickets following this flow:
-**read ticket → check blockers → implement -> verify → human PR hand-off**
+One agent implements and verifies well-specified Linear tickets.
+**Read → check blockers → implement → verify → human PR hand-off.**
 
-This factory is meant for working on well specified tickets that already supplies requirements, diagnosis/reproduction when relevant, and acceptance criteria.
+## Workflow
+- **`implementer`:** fixes bugs or builds features; blocked work pauses before coding.
+- **`linear-intake`:** starts on delegation or the `factory-implement` label.
+- **`check-blockers`:** checks dependents when an issue becomes Done.
 
-## Agent
-**`implementer`:** reads the issue, checks readiness + blockers, implements the bug or feature, verifies it, and delivers one PR. Blocked work stops before coding.
+## Required setup
+Replace or confirm these values everywhere listed:
 
-## Automations
-**`linear-intake`:** runs on Linear delegation or the `factory-implement` label.
-**`check-blockers`:** runs only when an issue enters the configured `Done` state. It checks for newly unblocked issues and moves those to implementation.
+| Value | Set or confirm | Files |
+| --- | --- | --- |
+| `customer-org` / `customer-repo` | Your GitHub owner/repository | [Factory](factory.yaml) |
+| `Customer Team` | Your Linear team name | [Intake](automations/linear-intake/automation.md), [blockers](automations/check-blockers/automation.md), [scope skill](skills/ticket-delivery/SKILL.md) |
+| `Customer Project` | Your Linear project name | [Intake](automations/linear-intake/automation.md), [scope skill](skills/ticket-delivery/SKILL.md) |
+| `Done` | The team's completed state name | [Blockers](automations/check-blockers/automation.md) |
+| `factory-implement` | Create this Linear label, or change both references | [Intake](automations/linear-intake/automation.md), [scope skill](skills/ticket-delivery/SKILL.md) |
+
+Connect GitHub and Linear with repository/issue access. Keep credentials out of these files.
+
+## Optional customization
+Change the name, alias, or model in [factory.yaml](factory.yaml), or the [default runner](runners/default.yaml).
+If changing the alias, align `factory:<alias>` in the [GitHub skill](skills/github/SKILL.md); currently `factory:example-tickets`.
+For cross-team blockers, add prerequisite teams and completed states to the [blocker filter](automations/check-blockers/automation.md).
+
+## Before enabling
+Validate the complete tree and inspect the apply plan; live access is checked separately.
+A human or existing integration must set Done **after merge**. There is no polling fallback.

@@ -26,7 +26,7 @@ An incorrect PR is not successful delivery: report/correct it.
 
 Call `report_pr` as soon as the PR is created **or adopted**, with HTTPS URL and
 head branch. Register it again in a new run that adopts it. Apply this factory's
-label, currently `factory:simple-tickets`, derived from its own `factory.yaml`
+label, currently `factory:example-tickets`, derived from its own `factory.yaml`
 alias; keep the label aligned when changing the alias. Label failure does not
 block hand-off but must be reported. Labels identify artifacts, not progress;
 this factory has no GitHub lifecycle automation.
